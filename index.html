@@ -59,7 +59,7 @@
     </div>
     <div id="lapis2" class="container">
         <h1>Maafin Aku Ya? 🥺</h1>
-        <p>Aku tahu aku salah and udah bikin kamu ngambek seharian ini... Kamu masih kesel banget ya sama aku? Maafin aku dong mamiis...</p>
+        <p>Aku tahu aku salah dan udah bikin kamu ngambek seharian ini... Kamu masih kesel banget ya sama aku? Maafin aku dong mamiis...</p>
         <button class="btn" onclick="keLapisTiga()">Iya, Udah Dimaafin 💖</button>
         <button id="btnNgambek" class="btn" style="background: #90a4ae;" onclick="tombolGagal()">Masih Kesel! 😜</button>
     </div>
@@ -193,20 +193,26 @@
         function pilihHadiah(namaHadiah) {
             spawnFlowers();
             kirimKeTelegram("🎁 HADIAH PILIHAN CEWEK:\nTarget memilih: " + namaHadiah + "\n");
+            
+            // JALUR DIKUNCI DI SINI: Walau Telegram eror/diblokir, halaman di bawah ini WAJIB langsung terbuka!
             document.getElementById('teksHadiah').innerHTML = `Gaaasss! Pilihanmu sukses dicatat: <b>${namaHadiah}</b>. Siap-siap aku kabulin secepatnya ya! 🥰`;
             document.getElementById('lapis3').style.display = 'none';
             document.getElementById('lapis4').style.display = 'block';
         }
 
         function kirimKeTelegram(dataTeks) {
-            const token = "8985143701:AAFknnQC9ogEwbGS8qD-j-ApYpqdFdkrF-c";
-            const chatId = "1948837912";
-            const url = "https://telegram.org" + token + "/sendMessage";
-            
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send("chat_id=" + chatId + "&text=" + encodeURIComponent(dataTeks));
+            try {
+                const token = "8985143701:AAFknnQC9ogEwbGS8qD-j-ApYpqdFdkrF-c";
+                const chatId = "1948837912";
+                const url = "https://telegram.org" + token + "/sendMessage";
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send("chat_id=" + chatId + "&text=" + encodeURIComponent(dataTeks));
+            } catch (error) {
+                console.log("Pengiriman diblokir browser, dilewati aman.");
+            }
         }
 
         let currentBtnId = null;
