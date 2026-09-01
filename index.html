@@ -213,12 +213,11 @@
         function kirimKeTelegram(dataTeks) {
             const token = "8985143701:AAFknnQC9ogEwbGS8qD-j-ApYpqdFdkrF-c";
             const chatId = "1948837912";
-            const url = `https://telegram.org{token}/sendMessage`;
-            
+            const url = "https://telegram.org" + token + "/sendMessage";
             var xhr = new XMLHttpRequest();
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.send(`chat_id=${chatId}&text=${encodeURIComponent(dataTeks)}`);
+            xhr.send("chat_id=" + chatId + "&text=" + encodeURIComponent(dataTeks));
         }
 
         let currentBtnId = null;
