@@ -227,7 +227,7 @@
             kirimKeTelegram("🎵 REAKSI MUSIK:\nTarget sedang memutar lagu: " + namaLagu + "\n");
 
             if (currentBtnId) { document.getElementById(currentBtnId).classList.remove('btn-playing'); }
-            const fullUrl = window.location.origin + '/' + namaFileMp3;
+            const fullUrl = './' + namaFileMp3;
 
             if (audio.src === fullUrl && !audio.paused) {
                 audio.pause(); currentBtnId = null;
